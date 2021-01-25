@@ -1,0 +1,3 @@
+[submodule "submodules/zstd"]
+	path = submodules/zstd
+	url = https://github.com/facebook/zstd

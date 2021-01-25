@@ -101,6 +101,9 @@ else()
     add_link_options( $<IF:$<CONFIG:Debug>,-g,-O3> )
 endif()
 
+set(ZSTD_BUILD_STATIC ON)
+add_subdirectory(submodules/zstd/build/cmake)
+
 set(KTX_MAIN_SRC
     include/ktx.h
     lib/basis_sgd.h
@@ -214,6 +217,12 @@ macro(commom_lib_settings lib write)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/basisu/transcoder>
         $<INSTALL_INTERFACE:lib/basisu/transcoder>
 
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/submodules/zstd/lib>
+        $<INSTALL_INTERFACE:submodules/zstd/lib>
+
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/submodules/zstd/lib/common>
+        $<INSTALL_INTERFACE:submodules/zstd/lib/common>
+
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/other_include>
         $<INSTALL_INTERFACE:other_include>
     )
@@ -283,6 +292,8 @@ macro(commom_lib_settings lib write)
         target_compile_definitions(${lib} PUBLIC KTX_FEATURE_KTX2)
     endif()
 
+    add_dependencies(${lib} libzstd_static)
+
     if(WIN32)
         target_link_libraries(
             ${lib}
@@ -308,7 +319,7 @@ macro(commom_lib_settings lib write)
             target_link_libraries(
                 ${lib}
             PRIVATE
-                ${CMAKE_CURRENT_SOURCE_DIR}/other_lib/mac/Release/libzstd.a
+                ${CMAKE_BINARY_DIR}/submodules/zstd/build/cmake/lib/libzstd.a
             )
         endif()
     
