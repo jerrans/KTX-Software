@@ -102,6 +102,7 @@ else()
 endif()
 
 set(ZSTD_BUILD_STATIC ON)
+set(ZSTD_BUILD_SHARED OFF)
 add_subdirectory(submodules/zstd/build/cmake)
 
 set(KTX_MAIN_SRC
@@ -298,7 +299,7 @@ macro(commom_lib_settings lib write)
         target_link_libraries(
             ${lib}
         PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/other_lib/win/Release-x64/zstd_static.lib
+            libzstd_static
         )
         # By wrapping in generator expression we force multi configuration generators (like Visual Studio)
         # to take the exact path and not change it.
