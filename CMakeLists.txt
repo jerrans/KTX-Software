@@ -332,7 +332,7 @@ macro(commom_lib_settings lib write)
         )
     
     elseif(LINUX)
-        find_package(zstd REQUIRED)
+        #find_package(zstd REQUIRED)
         find_package(Threads REQUIRED)
         target_link_libraries(
             ${lib}
@@ -343,7 +343,8 @@ macro(commom_lib_settings lib write)
         target_link_libraries(
             ${lib}
         PRIVATE
-            zstd::zstd
+            #zstd::zstd
+            libzstd_static
         )
 
     elseif(ANDROID)
